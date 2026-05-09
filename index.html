@@ -3,6 +3,11 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<!-- OLULINE THINGLINKI JAOKS -->
+<meta http-equiv="Content-Security-Policy"
+content="frame-ancestors 'self' https://www.thinglink.com https://www.thinglink.com/;">
+
 <title>Viikingite Viktoriin</title>
 
 <style>
@@ -67,7 +72,7 @@
         color: #ffd6d6;
     }
 
-    /* MODAL */
+    /* MODALID */
     .modal {
         display: none;
         position: fixed;
@@ -88,7 +93,7 @@
         text-align: center;
         color: #ffdd99;
         box-shadow: 0 0 20px black;
-        width: 300px;
+        width: 320px;
     }
 
     .close-btn {
@@ -106,23 +111,39 @@
 </head>
 <body>
 
+<!-- AVAINFO POPUP -->
+<div class="modal" id="startModal" style="display:flex;">
+    <div class="modal-content">
+        <h2>⚔️ Tere, viiking! ⚔️</h2>
+
+        <p>
+            Vasta küsimustele õigesti ja tõesta,
+            et oled tõeline põhjamaa sõdalane!
+        </p>
+
+        <button class="close-btn" onclick="closeStartModal()">
+            Alusta viktoriini
+        </button>
+    </div>
+</div>
+
 <div class="quiz-container">
     <h1>⚔️ Viikingite Viktoriin ⚔️</h1>
 
     <!-- Küsimus 1 -->
     <div class="question active" id="q1">
-        <h2>1. Kus elasid viikingid?</h2>
+        <h2>Why did Vikings often travel by ship instead of by land?</h2>
 
-        <button onclick="checkAnswer(false, 'Viikingid ei elanud Saksamaal.')">
-            Saksamaal
+        <button onclick="checkAnswer(false, 'Longships were fast and used for raids and battles, but Knarrs were built mainly for carrying cargo and crossing long ocean journeys.')">
+            Longship
         </button>
 
-        <button onclick="checkAnswer(true, '', 1)">
-            Skandinaavias
+        <button onclick="checkAnswer(true)">
+            Knarr
         </button>
 
-        <button onclick="checkAnswer(false, 'Egiptus ei olnud viikingite kodumaa.')">
-            Egiptuses
+        <button onclick="checkAnswer(false, 'Canoes were much smaller and not used by Vikings for ocean travel.')">
+            Canoe
         </button>
 
         <div class="feedback"></div>
@@ -130,18 +151,18 @@
 
     <!-- Küsimus 2 -->
     <div class="question" id="q2">
-        <h2>2. Millega viikingid kuulsaks said?</h2>
+        <h2>What helped Viking sailors find their way during long journeys?</h2>
 
-        <button onclick="checkAnswer(true, '', 2)">
-            Meresõitude ja vallutustega
+        <button onclick="checkAnswer(true)">
+            The stars and the sun
         </button>
 
-        <button onclick="checkAnswer(false, 'Viikingid ei käinud kosmoses.')">
-            Kosmoselendudega
+        <button onclick="checkAnswer(false, 'GPS technology did not exist during the Viking Age.')">
+            GPS devices
         </button>
 
-        <button onclick="checkAnswer(false, 'Viikingid ei ehitanud püramiide.')">
-            Püramiidide ehitamisega
+        <button onclick="checkAnswer(false, 'Traffic signs are for roads, not ocean navigation.')">
+            Traffic signs
         </button>
 
         <div class="feedback"></div>
@@ -149,18 +170,18 @@
 
     <!-- Küsimus 3 -->
     <div class="question" id="q3">
-        <h2>3. Mis relva kasutasid viikingid tihti?</h2>
+        <h2>What was the main reason Vikings went on long ship journeys?</h2>
 
-        <button onclick="checkAnswer(false, 'Laserrelvi siis veel ei olnud.')">
-            Laserrelv
+        <button onclick="checkAnswer(false, 'Vikings did not build cities underwater.')">
+            To build underwater cities
         </button>
 
-        <button onclick="checkAnswer(true, '', 3)">
-            Kirves
+        <button onclick="checkAnswer(true)">
+            To explore, trade, and raid
         </button>
 
-        <button onclick="checkAnswer(false, 'Tankid leiutati palju hiljem.')">
-            Tank
+        <button onclick="checkAnswer(false, 'Dinosaurs had been extinct for millions of years before Vikings lived.')">
+            To search for dinosaurs
         </button>
 
         <div class="feedback"></div>
@@ -171,30 +192,46 @@
     </div>
 </div>
 
-<!-- Õige vastuse modal -->
+<!-- ÕIGE VASTUSE POPUP -->
 <div class="modal" id="successModal">
     <div class="modal-content">
         <h2>🍻 Tubli viiking! 🍻</h2>
         <p>Õige vastus!</p>
-        <button class="close-btn" onclick="nextQuestion()">Jätka</button>
+
+        <button class="close-btn" onclick="nextQuestion()">
+            Jätka
+        </button>
     </div>
 </div>
 
 <script>
     let currentQuestion = 1;
 
-    function checkAnswer(correct, explanation = "", questionNumber = null) {
+    // AVAPOPUP
+    function closeStartModal() {
+        document.getElementById("startModal").style.display = "none";
+    }
 
-        const activeQuestion = document.getElementById("q" + currentQuestion);
-        const feedback = activeQuestion.querySelector(".feedback");
+    // VASTUSE KONTROLL
+    function checkAnswer(correct, explanation = "") {
+
+        const activeQuestion =
+            document.getElementById("q" + currentQuestion);
+
+        const feedback =
+            activeQuestion.querySelector(".feedback");
 
         feedback.style.display = "none";
 
         if (correct) {
-            document.getElementById("successModal").style.display = "flex";
+
+            document.getElementById("successModal")
+                .style.display = "flex";
+
         } else {
+
             feedback.innerHTML = `
-                <strong>Oiih, see on vale vastus!</strong><br>
+                <strong>Vale vastus!</strong><br>
                 ${explanation}
             `;
 
@@ -202,21 +239,30 @@
         }
     }
 
+    // JÄRGMINE KÜSIMUS
     function nextQuestion() {
 
-        document.getElementById("successModal").style.display = "none";
+        document.getElementById("successModal")
+            .style.display = "none";
 
-        const current = document.getElementById("q" + currentQuestion);
+        const current =
+            document.getElementById("q" + currentQuestion);
+
         current.classList.remove("active");
 
         currentQuestion++;
 
-        const next = document.getElementById("q" + currentQuestion);
+        const next =
+            document.getElementById("q" + currentQuestion);
 
         if (next) {
+
             next.classList.add("active");
+
         } else {
-            document.getElementById("endMessage").style.display = "block";
+
+            document.getElementById("endMessage")
+                .style.display = "block";
         }
     }
 </script>
