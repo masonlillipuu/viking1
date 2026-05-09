@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Viikingite Viktoriin</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: linear-gradient(to bottom, #2b1d0e, #5a3b1c);
+        color: #f5e6c8;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
+
+    .quiz-container {
+        background: rgba(0,0,0,0.7);
+        padding: 30px;
+        border-radius: 15px;
+        width: 90%;
+        max-width: 700px;
+        box-shadow: 0 0 20px black;
+        text-align: center;
+    }
+
+    h1 {
+        color: #ffcc66;
+    }
+
+    .question {
+        display: none;
+        margin-top: 20px;
+    }
+
+    .question.active {
+        display: block;
+    }
+
+    button {
+        display: block;
+        width: 100%;
+        margin-top: 12px;
+        padding: 14px;
+        border: none;
+        border-radius: 8px;
+        background: #8b5a2b;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    button:hover {
+        background: #c47b36;
+    }
+
+    .feedback {
+        margin-top: 15px;
+        padding: 12px;
+        border-radius: 8px;
+        display: none;
+        background: #7a1e1e;
+        color: #ffd6d6;
+    }
+
+    /* MODAL */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.7);
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal-content {
+        background: #3d2b1f;
+        padding: 30px;
+        border-radius: 15px;
+        text-align: center;
+        color: #ffdd99;
+        box-shadow: 0 0 20px black;
+        width: 300px;
+    }
+
+    .close-btn {
+        margin-top: 15px;
+        background: #c47b36;
+    }
+
+    .end-message {
+        display: none;
+        margin-top: 20px;
+        font-size: 24px;
+        color: #ffcc66;
+    }
+</style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <h1>⚔️ Viikingite Viktoriin ⚔️</h1>
+
+    <!-- Küsimus 1 -->
+    <div class="question active" id="q1">
+        <h2>1. Kus elasid viikingid?</h2>
+
+        <button onclick="checkAnswer(false, 'Viikingid ei elanud Saksamaal.')">
+            Saksamaal
+        </button>
+
+        <button onclick="checkAnswer(true, '', 1)">
+            Skandinaavias
+        </button>
+
+        <button onclick="checkAnswer(false, 'Egiptus ei olnud viikingite kodumaa.')">
+            Egiptuses
+        </button>
+
+        <div class="feedback"></div>
+    </div>
+
+    <!-- Küsimus 2 -->
+    <div class="question" id="q2">
+        <h2>2. Millega viikingid kuulsaks said?</h2>
+
+        <button onclick="checkAnswer(true, '', 2)">
+            Meresõitude ja vallutustega
+        </button>
+
+        <button onclick="checkAnswer(false, 'Viikingid ei käinud kosmoses.')">
+            Kosmoselendudega
+        </button>
+
+        <button onclick="checkAnswer(false, 'Viikingid ei ehitanud püramiide.')">
+            Püramiidide ehitamisega
+        </button>
+
+        <div class="feedback"></div>
+    </div>
+
+    <!-- Küsimus 3 -->
+    <div class="question" id="q3">
+        <h2>3. Mis relva kasutasid viikingid tihti?</h2>
+
+        <button onclick="checkAnswer(false, 'Laserrelvi siis veel ei olnud.')">
+            Laserrelv
+        </button>
+
+        <button onclick="checkAnswer(true, '', 3)">
+            Kirves
+        </button>
+
+        <button onclick="checkAnswer(false, 'Tankid leiutati palju hiljem.')">
+            Tank
+        </button>
+
+        <div class="feedback"></div>
+    </div>
+
+    <div class="end-message" id="endMessage">
+        🏆 Oled tõeline viiking! 🏆
+    </div>
+</div>
+
+<!-- Õige vastuse modal -->
+<div class="modal" id="successModal">
+    <div class="modal-content">
+        <h2>🍻 Tubli viiking! 🍻</h2>
+        <p>Õige vastus!</p>
+        <button class="close-btn" onclick="nextQuestion()">Jätka</button>
+    </div>
+</div>
+
+<script>
+    let currentQuestion = 1;
+
+    function checkAnswer(correct, explanation = "", questionNumber = null) {
+
+        const activeQuestion = document.getElementById("q" + currentQuestion);
+        const feedback = activeQuestion.querySelector(".feedback");
+
+        feedback.style.display = "none";
+
+        if (correct) {
+            document.getElementById("successModal").style.display = "flex";
+        } else {
+            feedback.innerHTML = `
+                <strong>Oiih, see on vale vastus!</strong><br>
+                ${explanation}
+            `;
+
+            feedback.style.display = "block";
+        }
+    }
+
+    function nextQuestion() {
+
+        document.getElementById("successModal").style.display = "none";
+
+        const current = document.getElementById("q" + currentQuestion);
+        current.classList.remove("active");
+
+        currentQuestion++;
+
+        const next = document.getElementById("q" + currentQuestion);
+
+        if (next) {
+            next.classList.add("active");
+        } else {
+            document.getElementById("endMessage").style.display = "block";
+        }
+    }
+</script>
+
+</body>
+</html>
